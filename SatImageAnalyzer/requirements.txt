@@ -1,0 +1,13 @@
+# List all required packages
+echo "flask
+flask-login
+flask-sqlalchemy
+numpy
+opencv-python
+rasterio
+scikit-image
+scikit-learn
+scipy
+matplotlib
+pandas
+gunicorn" > requirements.txt
