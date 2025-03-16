@@ -1,0 +1,11 @@
+# Create .gitignore file
+echo "__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+instance/
+uploads/
+results/
+*.db
+.DS_Store" > .gitignore
