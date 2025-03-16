@@ -1,0 +1,30 @@
+{pkgs}: {
+  deps = [
+    pkgs.gdal
+    pkgs.expat
+    pkgs.zlib
+    pkgs.openjpeg
+    pkgs.libwebp
+    pkgs.libtiff
+    pkgs.libjpeg
+    pkgs.libimagequant
+    pkgs.lcms2
+    pkgs.tk
+    pkgs.tcl
+    pkgs.qhull
+    pkgs.gtk3
+    pkgs.gobject-introspection
+    pkgs.ghostscript
+    pkgs.freetype
+    pkgs.ffmpeg-full
+    pkgs.cairo
+    pkgs.libGLU
+    pkgs.libGL
+    pkgs.glibcLocales
+    pkgs.xsimd
+    pkgs.pkg-config
+    pkgs.libxcrypt
+    pkgs.postgresql
+    pkgs.openssl
+  ];
+}

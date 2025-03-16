@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}500 - Server Error{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="display-1 text-danger">500</h1>
+                <h2 class="mb-4">Server Error</h2>
+                <p class="lead mb-5">We're sorry, but something went wrong on our end. Our team has been notified and is working to fix the issue.</p>
+                
+                <div class="mt-5">
+                    <a href="{{ url_for('main_bp.index') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-home"></i> Return to Home
+                    </a>
+                    <a href="{{ url_for('analysis_bp.analysis') }}" class="btn btn-outline-primary btn-lg ms-2">
+                        <i class="fas fa-chart-line"></i> Try Analysis Again
+                    </a>
+                </div>
+                
+                <div class="alert alert-info mt-5">
+                    <h5>Error Details</h5>
+                    <p>{{ error if error else "No additional information available." }}</p>
+                    <p class="mb-0">If this issue persists, please contact the site administrator with the information above.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

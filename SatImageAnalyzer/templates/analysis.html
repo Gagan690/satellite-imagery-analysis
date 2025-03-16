@@ -1,0 +1,248 @@
+{% extends "layout.html" %}
+
+{% block title %}Satellite Imagery Analysis - Upload & Process{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="mb-4"><i class="fas fa-chart-line"></i> Satellite Imagery Analysis</h1>
+                <p class="lead">Upload your satellite imagery and select processing and analysis options.</p>
+                <hr class="my-4">
+            </div>
+        </div>
+        
+        <form id="analysis-form" method="POST" action="{{ url_for('analysis_bp.process_image') }}" enctype="multipart/form-data">
+            <div class="row">
+                <!-- Left column - File Upload and Preview -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0"><i class="fas fa-upload"></i> Upload Satellite Image</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Select a satellite image to analyze. Supported formats: TIF, TIFF, JP2, PNG, JPG, JPEG</p>
+                            
+                            <div class="upload-drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click();">
+                                <i class="fas fa-cloud-upload-alt fa-3x mb-2 text-primary"></i>
+                                <p class="mb-0">Drop file here or click to browse</p>
+                                <p class="small text-muted">Maximum file size: 16MB</p>
+                            </div>
+                            
+                            <input type="file" id="file-input" name="file" accept=".tif,.tiff,.jp2,.png,.jpg,.jpeg" class="form-control d-none" required>
+                            
+                            <div class="mt-3">
+                                <div class="d-grid gap-2">
+                                    <button type="button" class="btn btn-primary" onclick="document.getElementById('file-input').click();">
+                                        <i class="fas fa-file-upload"></i> Browse Files
+                                    </button>
+                                    
+                                    {% if sample_images %}
+                                    <a href="#" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#sampleImagesModal">
+                                        <i class="fas fa-images"></i> Use Sample Data
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div id="file-info"></div>
+                            <div id="file-preview"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right column - Analysis Options -->
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0"><i class="fas fa-cogs"></i> Processing Options</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group mb-3">
+                                <label for="title"><i class="fas fa-heading"></i> Analysis Title:</label>
+                                <input type="text" id="title" name="title" class="form-control" placeholder="Enter a descriptive title" required>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="description"><i class="fas fa-align-left"></i> Description (optional):</label>
+                                <textarea id="description" name="description" class="form-control" rows="2" placeholder="Enter a brief description"></textarea>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="processing-technique"><i class="fas fa-sliders-h"></i> Image Processing Technique:</label>
+                                <select id="processing-technique" name="processing_technique" class="form-select" required>
+                                    <option value="histogram_equalization">Histogram Equalization</option>
+                                    <option value="gaussian_blur">Gaussian Blur</option>
+                                    <option value="edge_detection">Edge Detection</option>
+                                    <option value="ndvi_calculation">NDVI Calculation</option>
+                                    <option value="rgb_composite">RGB Composite</option>
+                                    <option value="unsupervised_classification">Unsupervised Classification</option>
+                                    <option value="band_combination">Band Combination</option>
+                                    <option value="pansharpening">Pansharpening</option>
+                                </select>
+                            </div>
+                            
+                            <div id="processing-options" class="mb-4">
+                                <!-- Options will be dynamically added based on selected technique -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0"><i class="fas fa-search"></i> Feature Extraction</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group mb-3">
+                                <label for="feature-extraction"><i class="fas fa-filter"></i> Feature to Extract:</label>
+                                <select id="feature-extraction" name="feature_extraction" class="form-select">
+                                    <option value="">None</option>
+                                    <option value="vegetation_indices">Vegetation Indices</option>
+                                    <option value="urban_detection">Urban Area Detection</option>
+                                    <option value="water_detection">Water Detection</option>
+                                    <option value="object_detection">Object Detection</option>
+                                    <option value="texture_analysis">Texture Analysis</option>
+                                </select>
+                            </div>
+                            
+                            <div id="feature-options">
+                                <!-- Options will be dynamically added based on selected feature -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0"><i class="fas fa-file-export"></i> Output Options</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="generate-report" name="generate_report" checked>
+                                <label class="form-check-label" for="generate-report">
+                                    Generate Analysis Report
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="save-processed" name="save_processed" checked>
+                                <label class="form-check-label" for="save-processed">
+                                    Save Processed Images
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="export-stats" name="export_stats" checked>
+                                <label class="form-check-label" for="export-stats">
+                                    Export Statistics (CSV)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-play-circle"></i> Run Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Sample Images Modal -->
+{% if sample_images %}
+<div class="modal fade" id="sampleImagesModal" tabindex="-1" aria-labelledby="sampleImagesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sampleImagesModalLabel">Select Sample Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    {% for image in sample_images %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ image.name }}</h5>
+                                <p class="card-text small">{{ image.description }}</p>
+                                <p class="card-text small text-muted">
+                                    <strong>Source:</strong> {{ image.source }}<br>
+                                    <strong>Format:</strong> {{ image.format }}<br>
+                                    <strong>Bands:</strong> {{ image.bands }}
+                                </p>
+                                <form action="{{ url_for('analysis_bp.use_sample_image') }}" method="POST">
+                                    <input type="hidden" name="sample_id" value="{{ image.id }}">
+                                    <button type="submit" class="btn btn-primary btn-sm">Use This Image</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Add functionality for drag-and-drop file upload
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        
+        if (dropZone && fileInput) {
+            // Prevent default drag behaviors
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            // Highlight drop zone when dragging over it
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+            
+            // Handle dropped files
+            dropZone.addEventListener('drop', handleDrop, false);
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            function highlight() {
+                dropZone.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                dropZone.classList.remove('highlight');
+            }
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                fileInput.files = files;
+                
+                // Trigger change event to update preview
+                const event = new Event('change');
+                fileInput.dispatchEvent(event);
+            }
+        }
+    });
+</script>
+{% endblock %}

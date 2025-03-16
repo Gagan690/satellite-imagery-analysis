@@ -1,0 +1,221 @@
+{% extends "layout.html" %}
+
+{% block title %}Satellite Imagery Analysis Tool - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4">Satellite Imagery Analysis Tool</h1>
+        <p class="lead">
+            Analyze, process, and extract information from satellite imagery with our comprehensive suite of tools.
+        </p>
+        <div class="mt-4">
+            <a href="{{ url_for('analysis_bp.analysis') }}" class="btn btn-primary btn-lg me-2">
+                <i class="fas fa-chart-line"></i> Start Analysis
+            </a>
+            <a href="{{ url_for('main_bp.documentation') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-book"></i> Learn More
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Key Features</h2>
+        
+        <div class="row g-4">
+            <!-- Feature 1 -->
+            <div class="col-md-4">
+                <div class="feature-box bg-dark">
+                    <div class="icon-box bg-primary-subtle">
+                        <i class="fas fa-images fa-2x text-primary"></i>
+                    </div>
+                    <h3>Image Processing</h3>
+                    <p>Apply sophisticated image processing techniques to enhance satellite imagery, including contrast enhancement, filtering, and edge detection.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="col-md-4">
+                <div class="feature-box bg-dark">
+                    <div class="icon-box bg-success-subtle">
+                        <i class="fas fa-leaf fa-2x text-success"></i>
+                    </div>
+                    <h3>Vegetation Analysis</h3>
+                    <p>Calculate vegetation indices like NDVI to analyze plant health, density, and distribution across landscapes.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="col-md-4">
+                <div class="feature-box bg-dark">
+                    <div class="icon-box bg-info-subtle">
+                        <i class="fas fa-water fa-2x text-info"></i>
+                    </div>
+                    <h3>Water Detection</h3>
+                    <p>Identify and analyze water bodies, assess water quality, and monitor changes in water resources over time.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="col-md-4">
+                <div class="feature-box bg-dark">
+                    <div class="icon-box bg-warning-subtle">
+                        <i class="fas fa-city fa-2x text-warning"></i>
+                    </div>
+                    <h3>Urban Analysis</h3>
+                    <p>Detect and analyze urban areas, infrastructure, and built environments to support urban planning and development.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="col-md-4">
+                <div class="feature-box bg-dark">
+                    <div class="icon-box bg-danger-subtle">
+                        <i class="fas fa-chart-pie fa-2x text-danger"></i>
+                    </div>
+                    <h3>Classification</h3>
+                    <p>Perform land cover classification to identify different types of terrain, vegetation, and human-made structures.</p>
+                </div>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="col-md-4">
+                <div class="feature-box bg-dark">
+                    <div class="icon-box bg-secondary-subtle">
+                        <i class="fas fa-file-alt fa-2x text-secondary"></i>
+                    </div>
+                    <h3>Detailed Reports</h3>
+                    <p>Generate comprehensive reports with visualizations, statistics, and analysis results in multiple formats.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Workflow Section -->
+<section class="py-5 bg-dark">
+    <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                    <!-- Step 1 -->
+                    <div class="text-center px-3">
+                        <div class="rounded-circle bg-primary d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-upload fa-2x text-white"></i>
+                        </div>
+                        <h4 class="mt-3">Upload</h4>
+                        <p class="text-secondary">Upload your satellite imagery in various formats.</p>
+                    </div>
+                    
+                    <div class="d-none d-md-block align-self-center">
+                        <i class="fas fa-arrow-right fa-2x text-secondary"></i>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="text-center px-3">
+                        <div class="rounded-circle bg-primary d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-cogs fa-2x text-white"></i>
+                        </div>
+                        <h4 class="mt-3">Process</h4>
+                        <p class="text-secondary">Select processing techniques and analysis methods.</p>
+                    </div>
+                    
+                    <div class="d-none d-md-block align-self-center">
+                        <i class="fas fa-arrow-right fa-2x text-secondary"></i>
+                    </div>
+                    
+                    <!-- Step 3 -->
+                    <div class="text-center px-3">
+                        <div class="rounded-circle bg-primary d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-chart-bar fa-2x text-white"></i>
+                        </div>
+                        <h4 class="mt-3">Analyze</h4>
+                        <p class="text-secondary">Extract features and conduct in-depth analysis.</p>
+                    </div>
+                    
+                    <div class="d-none d-md-block align-self-center">
+                        <i class="fas fa-arrow-right fa-2x text-secondary"></i>
+                    </div>
+                    
+                    <!-- Step 4 -->
+                    <div class="text-center px-3">
+                        <div class="rounded-circle bg-primary d-flex justify-content-center align-items-center mx-auto" style="width: 80px; height: 80px;">
+                            <i class="fas fa-file-download fa-2x text-white"></i>
+                        </div>
+                        <h4 class="mt-3">Results</h4>
+                        <p class="text-secondary">View and download detailed analysis reports.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('analysis_bp.analysis') }}" class="btn btn-primary btn-lg">
+                Get Started Now
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Sample Results Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Sample Analysis Results</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card data-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">NDVI Vegetation Analysis</h5>
+                        <p class="card-text">Normalized Difference Vegetation Index analysis showing vegetation health and density.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('analysis_bp.analysis') }}" class="btn btn-outline-primary">Try NDVI Analysis</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card data-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Urban Area Detection</h5>
+                        <p class="card-text">Detection and quantification of urban areas and built-up infrastructure.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('analysis_bp.analysis') }}" class="btn btn-outline-primary">Try Urban Detection</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card data-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Land Cover Classification</h5>
+                        <p class="card-text">Unsupervised classification identifying different land cover types.</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('analysis_bp.analysis') }}" class="btn btn-outline-primary">Try Classification</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to analyze your satellite imagery?</h2>
+        <p class="lead mb-4">Start extracting valuable insights from your geospatial data now.</p>
+        <a href="{{ url_for('analysis_bp.analysis') }}" class="btn btn-light btn-lg">
+            <i class="fas fa-rocket"></i> Launch Analysis Tool
+        </a>
+    </div>
+</section>
+{% endblock %}

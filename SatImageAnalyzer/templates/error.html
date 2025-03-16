@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}Error{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <div class="card bg-dark border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <h2 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Error</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">An error occurred while processing your request:</p>
+                        
+                        <div class="alert alert-danger">
+                            <p>{{ error }}</p>
+                        </div>
+                        
+                        <p class="mt-4">Please try the following:</p>
+                        
+                        <ul class="list-unstyled text-start">
+                            <li><i class="fas fa-check me-2"></i> Check if the file format is supported</li>
+                            <li><i class="fas fa-check me-2"></i> Ensure the file size is under 16MB</li>
+                            <li><i class="fas fa-check me-2"></i> Verify that the file is not corrupted</li>
+                            <li><i class="fas fa-check me-2"></i> Try a different image processing technique</li>
+                        </ul>
+                        
+                        <div class="mt-4">
+                            <a href="{{ url_for('analysis_bp.analysis') }}" class="btn btn-primary">
+                                <i class="fas fa-redo"></i> Try Again
+                            </a>
+                            <a href="{{ url_for('main_bp.index') }}" class="btn btn-outline-secondary ms-2">
+                                <i class="fas fa-home"></i> Return to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-5">
+                    <h4>Need Help?</h4>
+                    <p>Check the <a href="{{ url_for('main_bp.documentation') }}">documentation</a> for more information about supported file formats and processing techniques.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

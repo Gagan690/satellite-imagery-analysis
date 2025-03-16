@@ -1,0 +1,212 @@
+/* custom.css */
+/* Custom styles for the Satellite Imagery Analysis Tool */
+
+/* General styling */
+body {
+    padding-top: 56px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.footer {
+    margin-top: auto;
+    padding: 20px 0;
+    background-color: var(--bs-dark);
+}
+
+/* Styling for the main pages */
+.hero-section {
+    padding: 4rem 0;
+    background-color: var(--bs-gray-800);
+    margin-bottom: 2rem;
+}
+
+.feature-box {
+    padding: 1.5rem;
+    border-radius: 5px;
+    height: 100%;
+    transition: transform 0.3s;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+}
+
+.icon-box {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bs-primary-bg-subtle);
+}
+
+/* File upload and processing section */
+.upload-drop-zone {
+    height: 200px;
+    border: 2px dashed var(--bs-primary);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+    background-color: var(--bs-dark);
+    transition: all 0.3s;
+}
+
+.upload-drop-zone:hover {
+    background-color: var(--bs-gray-800);
+}
+
+.upload-drop-zone.highlight {
+    border-color: var(--bs-success);
+    background-color: var(--bs-success-bg-subtle);
+}
+
+/* Analysis page styles */
+.analysis-options {
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Results page styles */
+.results-container img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.data-card {
+    height: 100%;
+    transition: all 0.2s;
+}
+
+.data-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Image comparison slider */
+.image-comparison {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.before-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    overflow: hidden;
+}
+
+.after-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.comparison-slider {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 4px;
+    height: 100%;
+    background: var(--bs-primary);
+    z-index: 10;
+    cursor: ew-resize;
+}
+
+.comparison-slider:after {
+    content: '⟷';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--bs-primary);
+    color: white;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+/* Loading overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+}
+
+.spinner-container {
+    text-align: center;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Documentation page styles */
+.documentation-section {
+    margin-bottom: 3rem;
+}
+
+.documentation-section h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.code-block {
+    background-color: var(--bs-gray-800);
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .image-comparison {
+        height: 300px;
+    }
+    
+    .hero-section {
+        padding: 2rem 0;
+    }
+}

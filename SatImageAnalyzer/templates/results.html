@@ -1,0 +1,472 @@
+{% extends "layout.html" %}
+
+{% block title %}Analysis Results - {{ analysis.title }}{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="mb-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('main_bp.index') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('analysis_bp.analysis') }}">Analysis</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Results</li>
+                </ol>
+            </nav>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1><i class="fas fa-chart-bar"></i> Analysis Results</h1>
+                    
+                    <div>
+                        <a href="{{ url_for('analysis_bp.download_report', analysis_id=analysis.id) }}" class="btn btn-primary">
+                            <i class="fas fa-file-download"></i> Download Report
+                        </a>
+                        <a href="{{ url_for('analysis_bp.analysis') }}" class="btn btn-outline-secondary ms-2">
+                            <i class="fas fa-redo"></i> New Analysis
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Analysis Information -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">{{ analysis.title }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        {% if analysis.description %}
+                        <p>{{ analysis.description }}</p>
+                        {% endif %}
+                        
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" style="width: 180px;">Processing Method:</th>
+                                        <td>{{ analysis.processing_method }}</td>
+                                    </tr>
+                                    {% if analysis.features_extracted %}
+                                    <tr>
+                                        <th scope="row">Features Extracted:</th>
+                                        <td>{{ analysis.features_extracted }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th scope="row">Date/Time:</th>
+                                        <td>{{ analysis.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Original Filename:</th>
+                                        <td>{{ analysis.original_filename }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Image Format:</th>
+                                        <td>{{ analysis.image_format }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        {% if metadata %}
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Image Metadata</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped">
+                                        <tbody>
+                                            {% for key, value in metadata.items() %}
+                                            <tr>
+                                                <th>{{ key }}</th>
+                                                <td>{{ value }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Tabs -->
+        <ul class="nav nav-tabs mb-4" id="resultsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="imagery-tab" data-bs-toggle="tab" data-bs-target="#imagery" 
+                       type="button" role="tab" aria-controls="imagery" aria-selected="true">
+                    <i class="fas fa-image"></i> Imagery
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="statistics-tab" data-bs-toggle="tab" data-bs-target="#statistics" 
+                       type="button" role="tab" aria-controls="statistics" aria-selected="false">
+                    <i class="fas fa-calculator"></i> Statistics
+                </button>
+            </li>
+            {% if features_extracted %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="features-tab" data-bs-toggle="tab" data-bs-target="#features" 
+                       type="button" role="tab" aria-controls="features" aria-selected="false">
+                    <i class="fas fa-filter"></i> Features
+                </button>
+            </li>
+            {% endif %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="comparison-tab" data-bs-toggle="tab" data-bs-target="#comparison" 
+                       type="button" role="tab" aria-controls="comparison" aria-selected="false">
+                    <i class="fas fa-exchange-alt"></i> Comparison
+                </button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="resultsTabContent">
+            <!-- Imagery Tab -->
+            <div class="tab-pane fade show active" id="imagery" role="tabpanel" aria-labelledby="imagery-tab">
+                <div class="row">
+                    {% if processed_images %}
+                    {% for image in processed_images %}
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">{{ image.title }}</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <img src="data:image/png;base64,{{ image.data }}" class="img-fluid mb-3" alt="{{ image.title }}">
+                                {% if image.description %}
+                                <p class="text-muted">{{ image.description }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{{ url_for('analysis_bp.download_image', image_id=image.id) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download"></i> Download Image
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> No processed images available.
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Statistics Tab -->
+            <div class="tab-pane fade" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
+                {% if statistics %}
+                <div class="row">
+                    <!-- Basic Statistics -->
+                    {% if statistics.basic_stats %}
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">Basic Image Statistics</h5>
+                            </div>
+                            <div class="card-body">
+                                <h6>Image Dimensions</h6>
+                                <div class="table-responsive mb-4">
+                                    <table class="table table-sm table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Width</th>
+                                                <td>{{ statistics.basic_stats.dimensions.width }} pixels</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Height</th>
+                                                <td>{{ statistics.basic_stats.dimensions.height }} pixels</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Bands</th>
+                                                <td>{{ statistics.basic_stats.dimensions.bands }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Data Type</th>
+                                                <td>{{ statistics.basic_stats.overall.data_type }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Size</th>
+                                                <td>{{ "%.2f"|format(statistics.basic_stats.overall.size_mb) }} MB</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <h6>Band Statistics</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Band</th>
+                                                <th>Min</th>
+                                                <th>Max</th>
+                                                <th>Mean</th>
+                                                <th>Std Dev</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for band in statistics.basic_stats.band_stats %}
+                                            <tr>
+                                                <td>{{ band.band }}</td>
+                                                <td>{{ "%.4f"|format(band.min) }}</td>
+                                                <td>{{ "%.4f"|format(band.max) }}</td>
+                                                <td>{{ "%.4f"|format(band.mean) }}</td>
+                                                <td>{{ "%.4f"|format(band.std) }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Processing Statistics -->
+                    {% if statistics.processing_stats %}
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">Processing Results</h5>
+                            </div>
+                            <div class="card-body">
+                                {% if statistics.processing_stats.method %}
+                                <p><strong>Method:</strong> {{ statistics.processing_stats.method }}</p>
+                                {% endif %}
+                                
+                                {% if statistics.processing_stats.parameters %}
+                                <h6>Parameters Used</h6>
+                                <div class="table-responsive mb-4">
+                                    <table class="table table-sm table-striped">
+                                        <tbody>
+                                            {% for key, value in statistics.processing_stats.parameters.items() %}
+                                            <tr>
+                                                <th scope="row">{{ key }}</th>
+                                                <td>{{ value }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
+                                
+                                {% if statistics.processing_stats.metrics %}
+                                <h6>Performance Metrics</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped">
+                                        <tbody>
+                                            {% for key, value in statistics.processing_stats.metrics.items() %}
+                                            <tr>
+                                                <th scope="row">{{ key }}</th>
+                                                <td>{{ value }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Vegetation Statistics -->
+                    {% if statistics.vegetation_stats %}
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">Vegetation Analysis</h5>
+                            </div>
+                            <div class="card-body">
+                                <h6>NDVI Statistics</h6>
+                                <div class="table-responsive mb-4">
+                                    <table class="table table-sm table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Minimum NDVI</th>
+                                                <td>{{ "%.4f"|format(statistics.vegetation_stats.ndvi.min) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Maximum NDVI</th>
+                                                <td>{{ "%.4f"|format(statistics.vegetation_stats.ndvi.max) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Mean NDVI</th>
+                                                <td>{{ "%.4f"|format(statistics.vegetation_stats.ndvi.mean) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Median NDVI</th>
+                                                <td>{{ "%.4f"|format(statistics.vegetation_stats.ndvi.median) }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <h6>Vegetation Coverage</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Dense Vegetation (NDVI > 0.3)</th>
+                                                <td>{{ "%.2f"|format(statistics.vegetation_stats.coverage.vegetation_percent) }}%</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Sparse Vegetation (0.1 < NDVI ≤ 0.3)</th>
+                                                <td>{{ "%.2f"|format(statistics.vegetation_stats.coverage.sparse_vegetation_percent) }}%</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Non-Vegetation (NDVI ≤ 0.1)</th>
+                                                <td>{{ "%.2f"|format(statistics.vegetation_stats.coverage.non_vegetation_percent) }}%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Classification Statistics -->
+                    {% if statistics.classification_stats %}
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">Classification Results</h5>
+                            </div>
+                            <div class="card-body">
+                                <h6>Class Distribution</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Class</th>
+                                                <th>Pixel Count</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for cls in statistics.classification_stats.classes %}
+                                            <tr>
+                                                <td>{{ cls.class }}</td>
+                                                <td>{{ cls.count }}</td>
+                                                <td>{{ "%.2f"|format(cls.percent) }}%</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mt-3 text-center">
+                    <a href="{{ url_for('analysis_bp.download_statistics', analysis_id=analysis.id) }}" class="btn btn-primary">
+                        <i class="fas fa-file-csv"></i> Export Statistics (CSV)
+                    </a>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No statistics available for this analysis.
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Features Tab -->
+            <div class="tab-pane fade" id="features" role="tabpanel" aria-labelledby="features-tab">
+                {% if features_extracted %}
+                <div class="row">
+                    {% for feature in features_extracted %}
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0">{{ feature.title }}</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <img src="data:image/png;base64,{{ feature.visualization }}" class="img-fluid mb-3" alt="{{ feature.title }}">
+                                
+                                {% if feature.statistics %}
+                                <div class="text-start">
+                                    <h6>Feature Statistics</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped">
+                                            <tbody>
+                                                {% for key, value in feature.statistics.items() %}
+                                                <tr>
+                                                    <th scope="row">{{ key }}</th>
+                                                    <td>
+                                                        {% if value is mapping %}
+                                                            {% for subkey, subvalue in value.items() %}
+                                                                <div><strong>{{ subkey }}:</strong> {{ subvalue }}</div>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            {{ value }}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No feature extraction was performed for this analysis.
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Comparison Tab -->
+            <div class="tab-pane fade" id="comparison" role="tabpanel" aria-labelledby="comparison-tab">
+                {% if original_image and processed_image %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Before & After Comparison</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="image-comparison">
+                            <div class="image-container">
+                                <div class="after-image">
+                                    <img src="data:image/png;base64,{{ processed_image }}" alt="Processed Image" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div class="before-image">
+                                    <img src="data:image/png;base64,{{ original_image }}" alt="Original Image" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div class="comparison-slider"></div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-muted">Drag the slider to compare the original and processed images</p>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Comparison images are not available for this analysis.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

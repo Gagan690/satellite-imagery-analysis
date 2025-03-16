@@ -1,0 +1,425 @@
+{% extends "layout.html" %}
+
+{% block title %}Documentation - Satellite Imagery Analysis Tool{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <!-- Sidebar Navigation -->
+                <div class="card position-sticky" style="top: 80px;">
+                    <div class="card-header">
+                        <h5 class="mb-0">Documentation</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <nav id="navbar-docs" class="navbar navbar-light bg-dark flex-column align-items-stretch p-3">
+                            <nav class="nav nav-pills flex-column">
+                                <a class="nav-link" href="#introduction">Introduction</a>
+                                <a class="nav-link" href="#getting-started">Getting Started</a>
+                                <a class="nav-link" href="#supported-formats">Supported Formats</a>
+                                <nav class="nav nav-pills flex-column">
+                                    <a class="nav-link ms-3 my-1" href="#image-processing">Image Processing</a>
+                                    <a class="nav-link ms-3 my-1" href="#feature-extraction">Feature Extraction</a>
+                                </nav>
+                                <a class="nav-link" href="#vegetation-indices">Vegetation Indices</a>
+                                <a class="nav-link" href="#classification">Land Cover Classification</a>
+                                <a class="nav-link" href="#reports">Analysis Reports</a>
+                                <a class="nav-link" href="#api">API Reference</a>
+                                <a class="nav-link" href="#troubleshooting">Troubleshooting</a>
+                            </nav>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-9">
+                <h1 class="mb-4"><i class="fas fa-book"></i> Documentation</h1>
+                
+                <!-- Introduction Section -->
+                <div id="introduction" class="documentation-section">
+                    <h2>Introduction</h2>
+                    <p>
+                        The Satellite Imagery Analysis Tool is a comprehensive platform for analyzing, processing, 
+                        and extracting information from satellite imagery. This tool provides a variety of image 
+                        processing techniques and feature extraction methods specifically designed for remote sensing applications.
+                    </p>
+                    <p>
+                        With this tool, you can perform various analyses such as vegetation health assessment, urban area 
+                        detection, water body identification, land cover classification, and more. The tool also generates 
+                        detailed reports with visualizations and statistics to help you interpret the results.
+                    </p>
+                </div>
+                
+                <!-- Getting Started Section -->
+                <div id="getting-started" class="documentation-section">
+                    <h2>Getting Started</h2>
+                    <p>
+                        To begin using the Satellite Imagery Analysis Tool, follow these steps:
+                    </p>
+                    <ol>
+                        <li>
+                            <strong>Upload an Image:</strong> Navigate to the Analysis page and upload your satellite image.
+                            The tool supports various formats including GeoTIFF, JPEG2000, and standard image formats.
+                        </li>
+                        <li>
+                            <strong>Select Processing Options:</strong> Choose from various image processing techniques
+                            such as histogram equalization, edge detection, or NDVI calculation.
+                        </li>
+                        <li>
+                            <strong>Extract Features (Optional):</strong> Select additional feature extraction methods
+                            based on your analysis goals.
+                        </li>
+                        <li>
+                            <strong>Run Analysis:</strong> Click the "Run Analysis" button to process your image.
+                        </li>
+                        <li>
+                            <strong>Review Results:</strong> Examine the processed images, statistics, and extracted features
+                            in the results page.
+                        </li>
+                        <li>
+                            <strong>Download Results:</strong> Download reports, processed images, and statistics for further use.
+                        </li>
+                    </ol>
+                </div>
+                
+                <!-- Supported Formats Section -->
+                <div id="supported-formats" class="documentation-section">
+                    <h2>Supported Formats</h2>
+                    <p>
+                        The tool supports the following image formats:
+                    </p>
+                    <ul>
+                        <li><strong>GeoTIFF (.tif, .tiff)</strong> - Georeferenced TIFF images commonly used for satellite data</li>
+                        <li><strong>JPEG2000 (.jp2)</strong> - Compressed format often used for satellite imagery</li>
+                        <li><strong>PNG (.png)</strong> - Standard lossless image format</li>
+                        <li><strong>JPEG (.jpg, .jpeg)</strong> - Standard lossy image format</li>
+                    </ul>
+                    <p>
+                        <strong>Note:</strong> For full analysis capabilities, it is recommended to use multi-band satellite 
+                        imagery formats like GeoTIFF which preserve all spectral bands and geospatial information.
+                    </p>
+                </div>
+                
+                <!-- Image Processing Section -->
+                <div id="image-processing" class="documentation-section">
+                    <h2>Image Processing</h2>
+                    <p>
+                        The tool offers the following image processing techniques:
+                    </p>
+                    
+                    <h3>Histogram Equalization</h3>
+                    <p>
+                        Enhances the contrast of the image by redistributing pixel intensities across the available range.
+                        This helps to make features more visible, especially in images with poor contrast.
+                    </p>
+                    
+                    <h3>Gaussian Blur</h3>
+                    <p>
+                        Applies Gaussian smoothing to reduce noise in the image. You can adjust the sigma parameter
+                        to control the amount of blurring.
+                    </p>
+                    
+                    <h3>Edge Detection</h3>
+                    <p>
+                        Identifies edges in the image using various algorithms:
+                    </p>
+                    <ul>
+                        <li><strong>Canny:</strong> Advanced edge detection algorithm with good noise suppression</li>
+                        <li><strong>Sobel:</strong> Emphasizes edges in horizontal and vertical directions</li>
+                        <li><strong>Roberts:</strong> Simple and fast edge detection</li>
+                        <li><strong>Prewitt:</strong> Similar to Sobel but with different kernel weights</li>
+                    </ul>
+                    
+                    <h3>NDVI Calculation</h3>
+                    <p>
+                        Calculates the Normalized Difference Vegetation Index (NDVI) to measure vegetation health and density.
+                        NDVI is calculated using the formula: (NIR - Red) / (NIR + Red), where NIR is the near-infrared band
+                        and Red is the red band of the satellite image.
+                    </p>
+                    
+                    <h3>RGB Composite</h3>
+                    <p>
+                        Creates a color composite image by assigning different spectral bands to the red, green, and blue
+                        channels. This allows for visualization of non-visible bands as visible colors.
+                    </p>
+                    
+                    <h3>Unsupervised Classification</h3>
+                    <p>
+                        Performs automatic classification of the image using K-means clustering to identify different
+                        land cover types. You can specify the number of classes to identify.
+                    </p>
+                </div>
+                
+                <!-- Feature Extraction Section -->
+                <div id="feature-extraction" class="documentation-section">
+                    <h2>Feature Extraction</h2>
+                    <p>
+                        The tool offers the following feature extraction methods:
+                    </p>
+                    
+                    <h3>Vegetation Indices</h3>
+                    <p>
+                        Calculates various vegetation indices to assess plant health and density:
+                    </p>
+                    <ul>
+                        <li><strong>NDVI:</strong> Normalized Difference Vegetation Index</li>
+                        <li><strong>EVI:</strong> Enhanced Vegetation Index (requires blue band)</li>
+                        <li><strong>SAVI:</strong> Soil Adjusted Vegetation Index</li>
+                        <li><strong>NDWI:</strong> Normalized Difference Water Index</li>
+                    </ul>
+                    
+                    <h3>Urban Detection</h3>
+                    <p>
+                        Identifies urban and built-up areas using different methods:
+                    </p>
+                    <ul>
+                        <li><strong>NDBI:</strong> Normalized Difference Built-up Index (requires SWIR band)</li>
+                        <li><strong>Texture Analysis:</strong> Uses texture measures to identify urban areas</li>
+                        <li><strong>Clustering:</strong> Uses clustering algorithms to identify urban clusters</li>
+                    </ul>
+                    
+                    <h3>Water Detection</h3>
+                    <p>
+                        Identifies water bodies using various methods:
+                    </p>
+                    <ul>
+                        <li><strong>NDWI:</strong> Normalized Difference Water Index</li>
+                        <li><strong>Modified NDWI:</strong> Uses green and SWIR bands</li>
+                        <li><strong>Thresholding:</strong> Simple thresholding on blue band</li>
+                    </ul>
+                    
+                    <h3>Object Detection</h3>
+                    <p>
+                        Identifies discrete objects in the image:
+                    </p>
+                    <ul>
+                        <li><strong>Contour Detection:</strong> Finds object outlines</li>
+                        <li><strong>Blob Detection:</strong> Identifies blob-like features</li>
+                        <li><strong>Watershed Segmentation:</strong> Advanced segmentation method</li>
+                    </ul>
+                    
+                    <h3>Texture Analysis</h3>
+                    <p>
+                        Extracts texture features from the image:
+                    </p>
+                    <ul>
+                        <li><strong>GLCM:</strong> Gray Level Co-occurrence Matrix features</li>
+                        <li><strong>LBP:</strong> Local Binary Pattern features</li>
+                        <li><strong>Gabor Filter:</strong> Features based on Gabor filter responses</li>
+                    </ul>
+                </div>
+                
+                <!-- Vegetation Indices Section -->
+                <div id="vegetation-indices" class="documentation-section">
+                    <h2>Vegetation Indices</h2>
+                    <p>
+                        Vegetation indices are mathematical transformations of spectral bands designed to enhance 
+                        the vegetation signal and reduce unwanted effects. These indices are useful for assessing 
+                        vegetation health, coverage, and changes over time.
+                    </p>
+                    
+                    <h3>NDVI (Normalized Difference Vegetation Index)</h3>
+                    <p>
+                        NDVI is the most commonly used vegetation index, calculated as:
+                    </p>
+                    <div class="code-block">
+                        <code>NDVI = (NIR - Red) / (NIR + Red)</code>
+                    </div>
+                    <p>
+                        NDVI values range from -1 to 1, with:
+                    </p>
+                    <ul>
+                        <li>Values > 0.3: Healthy vegetation</li>
+                        <li>Values 0.1 to 0.3: Sparse vegetation</li>
+                        <li>Values < 0.1: Bare soil, water, or urban areas</li>
+                        <li>Negative values: Water bodies, clouds, snow</li>
+                    </ul>
+                    
+                    <h3>EVI (Enhanced Vegetation Index)</h3>
+                    <p>
+                        EVI is an improved vegetation index that corrects for atmospheric influences and soil background:
+                    </p>
+                    <div class="code-block">
+                        <code>EVI = 2.5 * (NIR - Red) / (NIR + 6 * Red - 7.5 * Blue + 1)</code>
+                    </div>
+                    
+                    <h3>SAVI (Soil Adjusted Vegetation Index)</h3>
+                    <p>
+                        SAVI adjusts for soil brightness in areas with low vegetation cover:
+                    </p>
+                    <div class="code-block">
+                        <code>SAVI = ((NIR - Red) / (NIR + Red + L)) * (1 + L)</code>
+                    </div>
+                    <p>
+                        Where L is a soil brightness correction factor, typically 0.5.
+                    </p>
+                </div>
+                
+                <!-- Land Cover Classification Section -->
+                <div id="classification" class="documentation-section">
+                    <h2>Land Cover Classification</h2>
+                    <p>
+                        Land cover classification divides the image into different categories representing land cover types.
+                        The tool offers unsupervised classification using K-means clustering.
+                    </p>
+                    
+                    <h3>Unsupervised Classification</h3>
+                    <p>
+                        Unsupervised classification automatically groups pixels with similar spectral characteristics
+                        without requiring training data. The K-means algorithm is used to cluster pixels into a specified
+                        number of classes.
+                    </p>
+                    <p>
+                        You can specify the number of classes (from 2 to 10) to identify. The algorithm will automatically
+                        group pixels into these classes based on their spectral similarity.
+                    </p>
+                    <p>
+                        The resulting classification map assigns each pixel to a class, and statistics are calculated
+                        for each class showing the pixel count and percentage coverage.
+                    </p>
+                </div>
+                
+                <!-- Analysis Reports Section -->
+                <div id="reports" class="documentation-section">
+                    <h2>Analysis Reports</h2>
+                    <p>
+                        The tool generates comprehensive reports of analysis results containing:
+                    </p>
+                    <ul>
+                        <li><strong>Processed Images:</strong> Visualizations of the processed satellite imagery</li>
+                        <li><strong>Basic Statistics:</strong> Image dimensions, band statistics, etc.</li>
+                        <li><strong>Processing Results:</strong> Details of the processing method and parameters</li>
+                        <li><strong>Feature Statistics:</strong> Quantitative analysis of extracted features</li>
+                        <li><strong>Comparison Views:</strong> Side-by-side comparison of original and processed images</li>
+                    </ul>
+                    <p>
+                        Reports can be viewed in the web interface and downloaded in HTML format for sharing or archiving.
+                        Statistics can also be exported to CSV format for further analysis in other software.
+                    </p>
+                </div>
+                
+                <!-- API Reference Section -->
+                <div id="api" class="documentation-section">
+                    <h2>API Reference</h2>
+                    <p>
+                        The tool includes a comprehensive set of Python modules that can be used directly in your own code:
+                    </p>
+                    
+                    <h3>utils.image_processing</h3>
+                    <p>
+                        Contains functions for processing satellite imagery:
+                    </p>
+                    <ul>
+                        <li><code>load_image(file_path)</code>: Load an image from a file</li>
+                        <li><code>save_image(image_data, output_path, metadata)</code>: Save an image to a file</li>
+                        <li><code>histogram_equalization(image)</code>: Enhance image contrast</li>
+                        <li><code>gaussian_blur(image, sigma)</code>: Apply Gaussian smoothing</li>
+                        <li><code>edge_detection(image, method)</code>: Detect edges in the image</li>
+                        <li><code>calculate_ndvi(image, red_band, nir_band)</code>: Calculate NDVI</li>
+                        <li><code>unsupervised_classification(image, n_clusters)</code>: Classify the image</li>
+                        <li><code>create_composite(image, band_indices)</code>: Create a band composite</li>
+                    </ul>
+                    
+                    <h3>utils.feature_extraction</h3>
+                    <p>
+                        Contains functions for extracting features from satellite imagery:
+                    </p>
+                    <ul>
+                        <li><code>extract_vegetation_indices(image, index_type, red_band, nir_band)</code>: Calculate vegetation indices</li>
+                        <li><code>detect_urban_areas(image, method)</code>: Detect urban areas</li>
+                        <li><code>detect_water(image, method)</code>: Detect water bodies</li>
+                        <li><code>detect_change(image1, image2, method)</code>: Detect changes between images</li>
+                        <li><code>extract_texture_features(image, method)</code>: Extract texture features</li>
+                        <li><code>object_detection(image, method, min_size)</code>: Detect objects in the image</li>
+                    </ul>
+                    
+                    <h3>utils.visualization</h3>
+                    <p>
+                        Contains functions for visualizing satellite imagery and analysis results:
+                    </p>
+                    <ul>
+                        <li><code>create_composite_visualization(image, bands, stretch, clip_percentile)</code>: Create RGB composite</li>
+                        <li><code>visualize_ndvi(ndvi, colormap, title, figure_size)</code>: Visualize NDVI data</li>
+                        <li><code>visualize_classification(classification_map, num_classes, colormap, title, figure_size)</code>: Visualize classification</li>
+                        <li><code>visualize_features(image, features, feature_type, figure_size)</code>: Visualize extracted features</li>
+                        <li><code>create_comparison_visualization(images, titles, figure_size)</code>: Create comparison view</li>
+                    </ul>
+                </div>
+                
+                <!-- Troubleshooting Section -->
+                <div id="troubleshooting" class="documentation-section">
+                    <h2>Troubleshooting</h2>
+                    
+                    <h3>Common Issues</h3>
+                    <ul>
+                        <li>
+                            <strong>File Upload Errors:</strong>
+                            <p>
+                                If you encounter errors during file upload, check that your file is in a supported format
+                                and does not exceed the 16MB size limit. For large files, consider resampling or subsetting
+                                the image before uploading.
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Processing Errors:</strong>
+                            <p>
+                                If processing fails, check that your input image has the expected number of bands for the
+                                selected processing technique. For example, NDVI calculation requires red and near-infrared bands.
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Memory Issues:</strong>
+                            <p>
+                                Processing very large images may cause memory issues. If you encounter out-of-memory errors,
+                                try using a smaller image or subset of your original image.
+                            </p>
+                        </li>
+                        <li>
+                            <strong>Band Indices:</strong>
+                            <p>
+                                Different satellite sensors have different band arrangements. Make sure to specify the correct
+                                band indices for your specific imagery when performing operations like NDVI calculation.
+                            </p>
+                        </li>
+                    </ul>
+                    
+                    <h3>Support</h3>
+                    <p>
+                        If you encounter issues not covered in this documentation, please contact us for further assistance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Activate bootstrap scrollspy for documentation navigation
+        const scrollSpy = new bootstrap.ScrollSpy(document.body, {
+            target: '#navbar-docs',
+            offset: 100
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('#navbar-docs a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
